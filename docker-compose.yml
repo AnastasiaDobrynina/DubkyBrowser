@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: ./db
+    environment:
+      POSTGRES_DB: db_dubky
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  flask:
+    build: ./webapp
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - fastapi
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:password@db/db_dubky
+      FASTAPI_URL: http://fastapi:8000
+
+  fastapi:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:password@db/db_dubky
+
+volumes:
+  db_data:
