@@ -4,7 +4,7 @@
 ## Инфопоиск
 * Корпус тектов - небольшой кусочек переписок из беседы Дубков. Лежит [тут](https://drive.google.com/drive/u/0/folders/1wynFYtGfYjptvbpO3sg0RQvO4MUJbZiw)
 * Два вида индексации: Word2Vec  и TF-IDF
-* Предобработка с помощью Seanza: удаление стоп-слов и пунктуации, для TF-IDF просто леммы, для W2V леммы в формате *лемма_POS*. Код предобработки представлен в [тетрадке](https://github.com/hse-courses-tokubetsu/project-AnastasiaDobrynina/blob/main/infopoisk%20research.ipynb). Поступающие запросы обрабатываются аналогичной функцией.
+* Предобработка с помощью Seanza: удаление стоп-слов и пунктуации, для TF-IDF просто леммы, для W2V леммы в формате *лемма_POS*. Код предобработки представлен в [тетрадке](https://github.com/AnastasiaDobrynina/DubkyBrowser/blob/main/infopoisk%20research.ipynb). Поступающие запросы обрабатываются аналогичной функцией.
 * Поиск осуществляется на уровне запроса к БД с помощью функции. Подсчитывается косинусная близость на основе индекса и заранее посчитанной нормы
 * При выдаче результатов выводится время и близость тектов
 ### API
@@ -20,11 +20,11 @@
   * `/save` - добавляется сообщения в сохраненные пользователем. В проекте реализуется при нажатии на "лайк"
   * `/unsave` - удаляет сообщения из сохраненных. Применяется при нажатии на "дизлайк" в профиле
 
-[Пример использования](https://github.com/hse-courses-tokubetsu/project-AnastasiaDobrynina/blob/main/Api%20Example.ipynb)
+[Пример использования](https://github.com/AnastasiaDobrynina/DubkyBrowser/blob/main/Api%20Example.ipynb)
 
 ## База данных
 * Схема БД
-![sql_shema](https://github.com/hse-courses-tokubetsu/project-AnastasiaDobrynina/blob/main/drawSQL-image-export-2024-12-26%20(1).png)
+[![sql_shema](https://github.com/hse-courses-tokubetsu/project-AnastasiaDobrynina/blob/main/drawSQL-image-export-2024-12-26%20(1).png)](https://github.com/AnastasiaDobrynina/DubkyBrowser/blob/main/drawSQL-image-export-2024-12-26%20(1).png)
 
 * Подключение к базе данных Posgres происходит с помощью `psycopg2` и `SQL Alchemy`
 * Данные добавляются вызовом файла [initdb.sql](https://github.com/hse-courses-tokubetsu/project-AnastasiaDobrynina/blob/main/db/initdb.sql)
@@ -40,7 +40,7 @@
 * [FastAPI](https://hub.docker.com/repository/docker/anesthesia12/dubky_fastapi/general) (бэкэнд)
 * [база данных](https://hub.docker.com/repository/docker/anesthesia12/dubky_db/general)
 
-Чтобы запустить приложении у себя необходимо скачать [docker-compose.yml](https://github.com/hse-courses-tokubetsu/project-AnastasiaDobrynina/blob/main/docker-compose.yml) и запустить команду в директории со скчанным файлом:
+Чтобы запустить приложении у себя необходимо скачать [docker-compose.yml](https://github.com/AnastasiaDobrynina/DubkyBrowser/blob/main/docker-compose.yml) и запустить команду в директории со скчанным файлом:
 ```
 docker-compose up
 ```
