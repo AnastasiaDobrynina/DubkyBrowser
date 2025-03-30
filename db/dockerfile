@@ -1,0 +1,5 @@
+FROM postgres:latest
+
+# Копируем SQL-скрипт и данные
+COPY initdb.sql /docker-entrypoint-initdb.d/
+COPY dubky_data.csv /docker-entrypoint-initdb.d/
