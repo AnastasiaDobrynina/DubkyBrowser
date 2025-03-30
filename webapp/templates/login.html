@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="login_container">
+  <div class="wrapper">
+    <h2 class="main_small_header">Вход</h2>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+          {% for message in messages %}
+             <p>{{ message }}</p>
+              <br>
+          {% endfor %}
+       {% endif %}
+    {% endwith %}
+    <form action="login" method="post">
+      <div class="input-box">
+        <input name="login" type="text" placeholder="Введите логин" required>
+      </div>
+      <div class="input-box">
+        <input name="password" type="password" placeholder="Введите пароль" required>
+      </div>
+      <div class="input-box">
+        <input type="Submit" value="Войти" class="main_button">
+      </div>
+      <div class="text">
+        <h3>Еще нет аккаунта? <a href="/register">Зарегестрироваться</a></h3>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

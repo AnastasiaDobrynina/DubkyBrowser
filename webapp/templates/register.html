@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="login_container">
+  <div class="wrapper">
+    <h2 class="main_small_header">Регистрация</h2>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+              {% for message in messages %}
+                 {{ message }}
+              {% endfor %}
+           {% endif %}
+        {% endwith %}
+    <form action="\register", method="post">
+      <div class="input-box">
+        <input name="login" type="text" placeholder="Введите логин" required>
+      </div>
+      <div class="input-box">
+        <input name="name" type="text" placeholder="Введите ваше имя" required>
+      </div>
+      <div class="input-box">
+        <input name="password" type="password" placeholder="Придумайте пароль" required>
+      </div>
+      <div class="input-box">
+        <input name="age" type="number" placeholder="Ваш возраст" min="0" max="100">
+      </div>
+      <div class="policy">
+        <h3>Ваш пол</h3>
+        <div>
+          <input value="M" type="radio" name="gender" id="male">
+          <label for="male">M</label>
+        </div>
+        <div>
+          <input value="Ж" type="radio" name="gender" id="female">
+          <label for="female">Ж</label>
+        </div>
+      </div>
+      <div class="input-box">
+        <input type="Submit" value="Зарегестрироваться" class="main_button">
+      </div>
+      <div class="text">
+        <h3>Уже есть аккаунт? <a href="/login">Войти</a></h3>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

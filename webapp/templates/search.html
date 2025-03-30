@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h2 class="main-header">Поиск</h2>
+        <form action="/res" method="get" class="form">
+            <div class="search-box">
+                <input type="text" class="search" name="text-q" placeholder="Поиск" title="Введите ваш запрос, укажите тип поиска и количество ответов, которое хотите получить">
+                <input type="submit" class="button" value="Найти">
+            </div>
+            <div class="parameter">Количество: <input type="number" min="1" max="100" class="number" value="5" name="quantity"></div>
+            <div class="parameter"> Тип:
+                <input type="radio" name="type" value="tfidf" id="tfidf">
+                <label for="tfidf">TF-IDF</label>
+                <input type="radio" name="type" value="w2v" id="w2v">
+                <label for="w2v">W2V</label>
+            </div>
+        </form>
+        {% if warning %}
+            <p>{{warning}}</p>
+        {% endif %}
+
+        {% if data %}
+            <div class="result-desc">
+                <p class="res-meta-inf">Время выполнения запроса: {{uptime}}</p>
+                <p>Запрос: <i>{{q}}</i></p>
+                <p>Количество ответов: {{len_data}}</p>
+            </div>
+              {% for example in data %}
+                  <div class="example-box">
+                      <p class="example" data-id="{{example[3]}}"> {{example[0]}}.
+                      <i>{{example[1] | safe }}</i>
+                      </p>
+                <button class="like"><i class="fa-regular fa-heart "></i></button>
+                  </div>
+                              <p>Близость: {{example[2] | safe }}</p>
+
+              {% endfor %}
+    {% endif %}
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const likeButtons = document.querySelectorAll(".like");
+    likeButtons.forEach(button => {
+      button.addEventListener("click", function () {
+      console.log('boom');
+      const exampleContent = this.parentElement.querySelector(".example");
+      const message_id = exampleContent.dataset['id']
+      console.log(JSON.stringify({ message_id: message_id, user_name: "{{current_user.user_login}}", saved_query: "{{q}}" }));
+
+        fetch("/save", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message_id: message_id, user_name: "{{current_user.user_login}}", saved_query: "{{q}}" }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message) {
+                const heart = button.children[0];
+              heart.classList.remove('fa-regular');
+              heart.classList.add('fa-solid');
+            } else {
+              alert("Error: " + data.error);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            alert("Не удалось лайкнуть сообщение");
+          });
+      });
+    });
+  });
+</script>
+{% endblock %}

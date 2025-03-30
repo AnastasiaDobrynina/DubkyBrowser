@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2 class="main-header">Личный кабинет</h2>
+    <div class="person-cart">
+        <i class="fa-solid fa-user-graduate"></i>
+        <div class="user-info">
+             <p>Логин: {{current_user.user_login}}</p>
+             <p>Имя: {{current_user.user_name}}</p>
+            <p>Пол: {% if current_user.user_sex%}{{current_user.user_sex}}{% else %}Не указан{% endif %}</p>
+            <p>Возраст: {% if current_user.user_age %}{{current_user.user_age}}{% else %}Не указан{% endif %}</p>
+        </div>
+    </div>
+
+    <h3 class="main_small_header">Сохраненные сообщения</h3>
+
+            {% for example in saved_messages %}
+                  <div class="example-box">
+                      <p class="example" data-id="{{example[3]}}"> {{example[0]}}.
+                      <i>{{example[1] | safe }}</i>
+                      </p>
+                <button class="like"><i class="fa-solid fa-heart "></i></button>
+                  </div>
+                              <div class="meta_container">
+                    <p class="metadata">Получено по запросу: {{example[2]}}</p>
+                </div>
+
+              {% endfor %}
+</div>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const likeButtons = document.querySelectorAll(".like");
+    likeButtons.forEach(button => {
+      button.addEventListener("click", function () {
+      const exampleContent = this.parentElement.querySelector(".example");
+      const message_id = exampleContent.dataset['id']
+      console.log(JSON.stringify({ message_id: message_id, user_name: "{{current_user.user_login}}", query: "{{q}}" }));
+
+        fetch("/unsave", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ message_id: message_id, user_name: "{{current_user.user_login}}", query: "{{q}}" }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.message) {
+                const heart = button.children[0];
+              heart.classList.remove('fa-solid');
+              heart.classList.add('fa-regular');
+            } else {
+              alert("Error: " + data.error);
+            }
+          })
+          .catch(error => {
+            console.error("Error:", error);
+            alert("Не удалось дизлайкнуть сообщение");
+          });
+      });
+    });
+  });
+</script>
+
+{% endblock %}
